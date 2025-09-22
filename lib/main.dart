@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:login_flutter/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  //define router
+  final GoRouter _router = GoRouter(
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        builder: (context, state) {
+          return const Login();
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/home',
+            builder: (context, state) => const HomeScreen(),
+          ),
+        ],
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      home: LoginDemo(),
+    return MaterialApp.router(
+      routerConfig: _router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class LoginDemo extends StatelessWidget {
-  const LoginDemo({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +52,7 @@ class LoginDemo extends StatelessWidget {
                 child: SizedBox(
                   width: 200,
                   height: 100,
-                  child: Image.asset('assets/images/bigO.jpg'),
+                  child: Image.asset('assets/images/logo.jpg'),
                 ),
               ),
             ),
@@ -63,7 +80,9 @@ class LoginDemo extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(15.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/home');
+                  },
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll<Color>(Colors.blue),
                   ),
